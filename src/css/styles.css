@@ -29,10 +29,6 @@ a {
   background-color: rgb(147, 196, 243);
   padding-top: 16px;
   padding-bottom: 16px;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  left: 0;
   box-shadow: 0 5 5 rgba(150, 150, 150, 0.5);
 }
 .header-container {
@@ -48,7 +44,8 @@ a {
 .nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  column-gap: 24px;
+  row-gap: 12px;
 }
 .menu-link {
   text-transform: uppercase;
@@ -82,7 +79,7 @@ a {
 }
 
 .gallery {
-  padding-top: 120px;
+  padding-top: 24px;
   padding-bottom: 64px;
 }
 

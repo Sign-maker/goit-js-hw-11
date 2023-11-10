@@ -18,4 +18,7 @@ export class PixabayAPI {
     const response = await axios.get('', { params: this.params });
     return response.data;
   }
+  isNextPage() {
+    return this.totalPages > this.params.page;
+  }
 }

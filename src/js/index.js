@@ -1,6 +1,11 @@
 import Notiflix from 'notiflix';
-import simpleLightbox from 'simplelightbox';
+import SimpleLightbox from 'simplelightbox';
 import { PixabayAPI } from './modules/pixabay-api';
+import {
+  renderMarkup,
+  scrollCards,
+  clearRender,
+} from './modules/renderHandler';
 import { Button } from './modules/load-more-btn';
 import { Loader } from './modules/loader';
 import { goTopBtnHandler } from './modules/go-top-btn';
@@ -13,18 +18,18 @@ const renderRef = document.querySelector('.gallery');
 
 Notiflix.Notify.init({
   fontSize: '16px',
-  timeout: 5000,
+  timeout: 4000,
+  clickToClose: true,
 });
 
 const pixabayApi = new PixabayAPI();
 const loadMoreBtn = new Button(loadMoreBtnRef);
 const searchLoader = new Loader(searchLoaderRef, '🔍');
 const loadMoreLoader = new Loader(loadMoreLoaderRef, '🎞️');
-const lightbox = new SimpleLightbox('.gallery a', {});
+const lightbox = new SimpleLightbox('.gallery a', { overlayOpacity: 0.9 });
 
 searchLoader.hide();
 loadMoreBtn.hide();
-loadMoreBtn.disable();
 loadMoreLoader.hide();
 
 formRef.addEventListener('submit', onFormSubmit);
@@ -39,9 +44,9 @@ async function onFormSubmit(evt) {
     Notiflix.Notify.warning('Plase input search query!');
     return;
   }
-  pixabayApi.params.page = 1;
 
-  clearRender();
+  pixabayApi.params.page = 1;
+  clearRender(renderRef);
   if (loadMoreBtn.isVisible) {
     loadMoreBtn.hide();
   }
@@ -58,20 +63,19 @@ async function onFormSubmit(evt) {
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
-
       return;
     }
 
-    Notiflix.Notify.success(`${total} image${total === 1 ? '' : 's'} finded`);
-
+    Notiflix.Notify.success(
+      `Hooray! We found ${total} image${total === 1 ? '' : 's'}.`
+    );
     pixabayApi.totalPages = Math.ceil(total / pixabayApi.params.per_page);
-    renderMarkup(data.hits);
+    renderMarkup(renderRef, data.hits);
     lightbox.refresh();
 
-    if (isNextPage()) {
+    if (pixabayApi.isNextPage()) {
       pixabayApi.params.page += 1;
       loadMoreBtn.show();
-      loadMoreBtn.enable();
     } else
       Notiflix.Notify.success(
         "We're sorry, but you've reached the end of search results."
@@ -91,12 +95,12 @@ async function onLoadMoreClick() {
     loadMoreLoader.show();
     const data = await pixabayApi.getCards();
 
-    renderMarkup(data.hits);
-    scrollCards();
+    renderMarkup(renderRef, data.hits);
+    scrollCards(renderRef);
     lightbox.refresh();
     loadMoreBtn.enable();
 
-    if (isNextPage()) {
+    if (pixabayApi.isNextPage()) {
       pixabayApi.params.page += 1;
     } else {
       Notiflix.Notify.success(
@@ -110,55 +114,4 @@ async function onLoadMoreClick() {
   } finally {
     loadMoreLoader.hide();
   }
-}
-function isNextPage() {
-  return pixabayApi.totalPages > pixabayApi.params.page;
-}
-
-function cardTemplate(card) {
-  const {
-    webformatURL,
-    largeImageURL,
-    likes,
-    views,
-    comments,
-    downloads,
-    tags,
-  } = card;
-  return `<div class="photo-card">
-      <a href="${largeImageURL}"><img src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
-      <div class="info">
-        <p class="info-item">
-          <b>Likes</b>${likes}
-        </p>
-        <p class="info-item">
-          <b>Views</b>${views}
-        </p>
-        <p class="info-item">
-          <b>Comments</b>${comments}
-        </p>
-        <p class="info-item">
-          <b>Downloads</b>${downloads}
-        </p>
-      </div>
-    </div>`;
-}
-
-function clearRender() {
-  renderRef.innerHTML = '';
-}
-
-function renderMarkup(cards) {
-  const markup = cards.map(cardTemplate).join('');
-  renderRef.insertAdjacentHTML('beforeend', markup);
-}
-
-function scrollCards() {
-  const { height: cardHeight } =
-    renderRef.firstElementChild.getBoundingClientRect();
-
-  window.scrollBy({
-    top: cardHeight * 2,
-    behavior: 'smooth',
-  });
 }

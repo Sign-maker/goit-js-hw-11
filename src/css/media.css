@@ -8,6 +8,18 @@
   }
 }
 
+@media screen and (min-width: 900px) {
+  .header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+  }
+  .gallery {
+    padding-top: 108px;
+  }
+}
+
 @media screen and (max-width: 767px) {
   .photo-card {
     margin-bottom: 24px;
