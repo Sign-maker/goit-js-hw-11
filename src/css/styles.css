@@ -183,6 +183,8 @@ a {
 .go-top--show {
   display: block;
 }
+
+/* ================== */
 .is-hidden {
   display: none;
 }
