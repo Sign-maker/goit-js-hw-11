@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>goit-js-hw-11 More Btn</title>
+    <link
+      rel="stylesheet"
+      href="../node_modules/modern-normalize/modern-normalize.css"
+    />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="stylesheet" href="./css/media.css" />
+    <link
+      rel="stylesheet"
+      href="../node_modules/notiflix/dist/notiflix-3.2.6.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../node_modules/simplelightbox/dist/simple-lightbox.css"
+    />
+    <script type="module" src="./js/version-infscroll.js" defer></script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-container">
+        <ul class="nav">
+          <li>
+            <a class="menu-link" href="./">More button Version</a>
+          </li>
+          <li>
+            <a class="menu-link active-link" href="#"
+              >Infinite scroll version</a
+            >
+          </li>
+        </ul>
+        <form class="search-form" id="search-form">
+          <input
+            type="text"
+            name="searchQuery"
+            autocomplete="off"
+            placeholder="Search images..."
+          />
+          <button type="submit" class="submit-btn loader-btn">
+            <span class="search-loader">🔍</span>Search
+          </button>
+        </form>
+      </div>
+    </header>
+
+    <div class="gallery">
+      <!-- Картки зображень -->
+    </div>
+
+    <div class="target"></div>
+    <div class="go-top">
+      <div>
+        <svg width="26" height="14">
+          <use href="./images/svg/icons.svg#arrow-up" />
+        </svg>
+      </div>
+    </div>
+  </body>
+</html>

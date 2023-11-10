@@ -1,0 +1,31 @@
+@media screen and (max-width: 420px) {
+  .info {
+    flex-wrap: wrap;
+    row-gap: 12px;
+  }
+  .info-item {
+    flex-basis: 50%;
+  }
+}
+@media screen and (max-width: 767px) {
+  .photo-card {
+    margin-bottom: 24px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .gallery {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .photo-card {
+    flex-basis: calc((100% - 24px) / 2);
+  }
+}
+
+@media screen and (min-width: 1199px) {
+  .photo-card {
+    flex-basis: calc((100% - 72px) / 4);
+  }
+}
